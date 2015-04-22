@@ -9,8 +9,8 @@ import (
 func main() {
 	cwd, _ := os.Getwd()
 	dir := cwd
-  gopath := os.Getenv("GOPATH")
-  for {
+	gopath := os.Getenv("GOPATH")
+	for {
 		if _, err := os.Stat(path.Join(dir, ".gopath")); err == nil {
 			gopath = dir
 			break
