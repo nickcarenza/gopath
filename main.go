@@ -11,6 +11,7 @@ import (
 // Example: gopath echo $GOPATH
 // Will print your standard GOPATH, ignoring the closest .gopath file
 // Solution: gopath printenv GOPATH
+// If all you want is the resulting GOPATH, you just just run gopath with no arguments
 
 func main() {
 	cwd, _ := os.Getwd()
@@ -27,6 +28,10 @@ func main() {
 		dir = path.Dir(dir)
 	}
 	os.Setenv("GOPATH", gopath)
+	if len(os.Args) < 2 {
+		os.Stdout.WriteString(gopath + "\n")
+		os.Exit(0)
+	}
 	cmd := exec.Command(os.Args[1], os.Args[2:]...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
