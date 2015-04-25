@@ -6,6 +6,12 @@ import (
 	"path"
 )
 
+// Gotcha 1: Evaluating environment variable in command
+// Environment variables written in your command will be evaluated by the shell before `gopath` has a change to update your environment
+// Example: gopath echo $GOPATH
+// Will print your standard GOPATH, ignoring the closest .gopath file
+// Solution: gopath printenv GOPATH
+
 func main() {
 	cwd, _ := os.Getwd()
 	dir := cwd
@@ -21,7 +27,7 @@ func main() {
 		dir = path.Dir(dir)
 	}
 	os.Setenv("GOPATH", gopath)
-	cmd := exec.Command("go", os.Args[1:]...)
+	cmd := exec.Command(os.Args[1], os.Args[2:]...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
