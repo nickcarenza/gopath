@@ -17,6 +17,9 @@ func main() {
 			if err != nil || gopath == "" {
 				gopath = dir
 			}
+			if !path.IsAbs(gopath) {
+				gopath = path.Join(dir, gopath)
+			}
 			break
 		}
 		if dir == "/" {
