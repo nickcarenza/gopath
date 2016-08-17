@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
@@ -12,7 +13,10 @@ func main() {
 	gopath := os.Getenv("GOPATH")
 	for {
 		if _, err := os.Stat(path.Join(dir, ".gopath")); err == nil {
-			gopath = dir
+			gopath, err = String(ioutil.ReadFile(path.Join(dir, ".gopath")))
+			if err != nil || gopath == "" {
+				gopath = dir
+			}
 			break
 		}
 		if dir == "/" {
@@ -30,4 +34,8 @@ func main() {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Run()
+}
+
+func String(b []byte, err error) (string, error) {
+	return string(b), err
 }
